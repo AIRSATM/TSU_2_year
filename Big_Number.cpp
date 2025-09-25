@@ -408,14 +408,12 @@ public:
         return res;
     }
     
-    BN operator / (const BN& var) const { // Деление на БЧ
+    BN operator / (BN& var) { // Деление на БЧ
         if (var.len == 1 && var.coef[0] == 0) {
-            throw invalid_argument("Invalid-delenie na null")
+            throw invalid_argument("деление на нуль");
         }
         if (*this < var) {
             BN zero;
-            zero.coef[0] = 0;
-            zero.len = 1;
             return zero;
         }
         if (*this == var) {
@@ -425,39 +423,101 @@ public:
             one.maxlen = 1;
             one.coef[0] = 1;
             one.len = 1;
-            return 1;
+            return one;
         }
-        int m = len - v.len;
+        if (var.len == 1) {
+            return *this / var.coef[0];
+        }
+        int m = len - var.len;
         DBASE b = ((DBASE)1 << BASE_SIZE);
-        DBASE d = b / ((DBASE)v.coef[v.len - 1] + 1);
         
-        BN newu = *this;
-        newu *= (BASE)d;
+        DBASE d = b / ((DBASE)var.coef[var.len - 1] + 1);
         
-        BN newv = v;
-        newv *= (BASE)d;
+        BN u = *this;
+        u *= (BASE)d;
         
-        if (newu.len == len) {
-            BASE* new_coef = new BASE[newu.len + 1];
-            
-            for (int i = 0; i < newu.len; i++) new_coef[i] = newu.coef[i];
-            new_coef[newu.len] = 0;
-            delete[] newu.coef;
-            newu.coef = new_coef;
-            newu.len++;
-            new.maxlen = newu.len;
+        BN v = var;
+        v *= (BASE)d;
+        
+        if (u.len == len) {
+            BASE* new_coef = new BASE[u.len + 1];
+            memcpy(new_coef, u.coef, u.len * sizeof(BASE));
+            new_coef[u.len] = 0;
+            delete[] u.coef;
+            u.coef = new_coef;
+            u.len++;
+            u.maxlen = u.len;
         }
+        
         BN q;
         delete[] q.coef;
         q.coef = new BASE[m + 1];
         q.maxlen = m + 1;
         q.len = m + 1;
-        for (int i = 0; i < q.len; i++) q.coef[i] = 0;
+        fill(q.coef, q.coef + q.len, 0);
+        
+        for (int j = m; j >= 0; j--) {
+            DBASE qhat;
+            DBASE rhat;
+            
+            DBASE dividend = ((DBASE)u.coef[j + var.len] << BASE_SIZE) + u.coef[j + var.len - 1];
+            qhat = dividend / v.coef[v.len - 1];
+            rhat = dividend % v.coef[v.len - 1];
+            
+            while (qhat >= b || 
+                   (var.len > 1 && qhat * v.coef[v.len - 2] > (rhat << BASE_SIZE) + u.coef[j + var.len - 2])) {
+                qhat--;
+                rhat += v.coef[v.len - 1];
+                if (rhat >= b) break;
+            }
+            
+            DBASE k = 0;
+            DBASE t;
+            
+            for(int i = 0; i < v.len; i++) {
+                DBASE p = qhat * v.coef[i] + k;
+                k = p >> BASE_SIZE;
+                p &= ((DBASE)1 << BASE_SIZE) - 1;
+                
+                if (u.coef[j + i] >= p) {
+                    u.coef[j + i] -= (BASE)p;
+                } else {
+                    u.coef[j + i] = (BASE)((((DBASE)1 << BASE_SIZE) + u.coef[j + i]) - p);
+                    k++;
+                }
+            }
+            
+            if (k > u.coef[j + v.len]) {
+                qhat--;
+                BASE carry = 0;
+                for (int i = 0; i < v.len; i++) {
+                    DBASE sum = (DBASE)u.coef[j + i] + v.coef[i] + carry;
+                    u.coef[j + i] = (BASE)sum;
+                    carry = (BASE)(sum >> BASE_SIZE);
+                }
+                u.coef[j + v.len] += carry;
+            } else {
+                u.coef[j + v.len] -= (BASE)k;
+            }
+            
+            q.coef[j] = (BASE)qhat;
+        }
+        
+        // Normalize result length
+        while (q.len > 1 && q.coef[q.len - 1] == 0) {
+            q.len--;
+        }
+        
         return q;
     }
     
-    BN operator % (const BN& var) const {
-        
+    BN operator % ( BN& var) {
+        if (var.len == 1 && var.coef[0] == 0) {
+            throw invalid_argument("деление на нуль");
+        }
+        BN quotient = *this / var;
+        BN product = quotient * var;
+        return *this - product;
     }
     
     void vvod_10() {

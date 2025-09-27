@@ -654,91 +654,121 @@ public:
     }
 };
 
+void test() {
+    const int max_length = 1000;
+    int N = 1000;
+    do {
+        int len_A = rand() % max_length + 1;
+        int len_D = rand() % max_length + 1;
+        
+        
+        BN A(len_A, true); // случайное число размера len_A
+        BN D(len_D, true); // случайное число размера len_D
+        
+        
+        if (D == BN()) continue; // защита от деления на ноль
+        
+        
+        BN Q = A / D;
+        BN R = A % D;
+        
+        
+        // Проверка условий: A == Q*D + R и R < D
+        if (!(A == Q * D + R && R < D)) {
+            cout << "Ошибка при тестировании деления!" << endl;
+            cout << "A: " << A << "\nD: " << D << "\nQ: " << Q << "\nR: " << R << endl;
+            break;
+        }
+    } while (--N);
+    
+    if (N == 0) {
+        cout << "Тестирование успешно завершено!" << endl;
+    }
+}
 int main()
 {
     srand(time(0)); 
+    test();
+    // cout << "конструктор 1: ";
+    // BN a1;
+    // cout << "\n";
+    // int n;
+    // bool mode;
+    // cout << "Введите n и mode: " << endl;
+    // cin >> n;
+    // cin >> mode;
 
-    cout << "конструктор 1: ";
-    BN a1;
-    cout << "\n";
-    int n;
-    bool mode;
-    cout << "Введите n и mode: " << endl;
-    cin >> n;
-    cin >> mode;
+    // cout << "рандом-конструктор a2: ";
+    // BN a2(n, mode); 
 
-    cout << "рандом-конструктор a2: ";
-    BN a2(n, mode); 
+    // cout << "конструктор копирования: \n";
+    // BN a3(a2); 
+    // cout << a3; 
 
-    cout << "конструктор копирования: \n";
-    BN a3(a2); 
-    cout << a3; 
-
-    cout << "\n оператор присваивания: \n";
-    BN a4;
-    a4 = a2; 
-    cout << a4; 
+    // cout << "\n оператор присваивания: \n";
+    // BN a4;
+    // a4 = a2; 
+    // cout << a4; 
     
-    cout << "\n оператор == : \n";
-    if (a4 == a2)
-        cout << "yes" << endl;
-    else
-        cout << "no" << endl;
-    cout << "\n оператор >= : \n";
-    if (a4 >= a2)
-        cout << "yes" << endl;
-    else 
-        cout << "no" << endl;
-    cout << "\n оператор > : \n";
-    if (a4 > a2)
-        cout << "yes" << endl;
-    else 
-        cout << "no" << endl;
+    // cout << "\n оператор == : \n";
+    // if (a4 == a2)
+    //     cout << "yes" << endl;
+    // else
+    //     cout << "no" << endl;
+    // cout << "\n оператор >= : \n";
+    // if (a4 >= a2)
+    //     cout << "yes" << endl;
+    // else 
+    //     cout << "no" << endl;
+    // cout << "\n оператор > : \n";
+    // if (a4 > a2)
+    //     cout << "yes" << endl;
+    // else 
+    //     cout << "no" << endl;
     
-    cout << "Сумма b & s: \n" << "n and mode: \n";
+    // cout << "Сумма b & s: \n" << "n and mode: \n";
 
-    BN b(5,1);
-    BN s(4,1);
-    cout << "\n"<< "b: " << b << endl;
-    cout << "s: " << s << endl;
-    BN res = b + s;
-    cout << res << endl;
+    // BN b(5,1);
+    // BN s(4,1);
+    // cout << "\n"<< "b: " << b << endl;
+    // cout << "s: " << s << endl;
+    // BN res = b + s;
+    // cout << res << endl;
     
-    cout << "Сумма b & 7: \n";
-    BN sum = b + 7;
-    cout << sum << endl;
+    // cout << "Сумма b & 7: \n";
+    // BN sum = b + 7;
+    // cout << sum << endl;
     
-    cout << "Разность b & s: \n";
-    cout << res - s << endl;
+    // cout << "Разность b & s: \n";
+    // cout << res - s << endl;
         
-    cout << "\n HEX-ввод: \n";
-    BN a5;
-    cin >> a5;
+    // cout << "\n HEX-ввод: \n";
+    // BN a5;
+    // cin >> a5;
     
-    cout << "Hex-вывод: " << a5;
+    // cout << "Hex-вывод: " << a5;
     
-    cout << "\n Умножение(BASE) a2 * 3: ";
-    BN mult2 = a2 * 3;
-    cout << mult2 << endl;
+    // cout << "\n Умножение(BASE) a2 * 3: ";
+    // BN mult2 = a2 * 3;
+    // cout << mult2 << endl;
     
-    cout << "\n Умножение(BN) a2 * a2: ";
-    BN mult3 = a2 * a3;
-    cout << mult3 << endl;
+    // cout << "\n Умножение(BN) a2 * a2: ";
+    // BN mult3 = a2 * a3;
+    // cout << mult3 << endl;
     
-    cout << "\n Деление(BASE) mult(BN) / 2: ";
-    BN del = mult3 / 2;
-    cout << del << endl;
+    // cout << "\n Деление(BASE) mult(BN) / 2: ";
+    // BN del = mult3 / 2;
+    // cout << del << endl;
     
-    cout << "\n Деление(BASE) mult(BN) % 2: ";
-    BN r = mult3 % 2;
-    cout << r << endl;
+    // cout << "\n Деление(BASE) mult(BN) % 2: ";
+    // BN r = mult3 % 2;
+    // cout << r << endl;
     
-    BN c;
-    cout << "\n Dec-ввод: ";
-    c.vvod_10();
+    // BN c;
+    // cout << "\n Dec-ввод: ";
+    // c.vvod_10();
     
-    cout << "\n Dec-вывод: ";
-    c.vyvod_10();
-    
+    // cout << "\n Dec-вывод: ";
+    // c.vyvod_10();
     return 0;
 }

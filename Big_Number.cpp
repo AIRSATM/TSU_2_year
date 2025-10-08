@@ -503,7 +503,7 @@ public:
             q.coef[j] = (BASE)qhat;
         }
         
-        // Normalize result length
+        // нормализация результата
         while (q.len > 1 && q.coef[q.len - 1] == 0) {
             q.len--;
         }

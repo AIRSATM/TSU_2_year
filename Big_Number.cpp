@@ -475,20 +475,20 @@ public:
             DBASE t;
             
             for(int i = 0; i < v.len; i++) {
-                DBASE p = qhat * v.coef[i] + k;
+                DBASE p = qhat * v.coef[i] + k; //умножение при делении
                 k = p >> BASE_SIZE;
-                p &= ((DBASE)1 << BASE_SIZE) - 1;
+                p &= ((DBASE)1 << BASE_SIZE) - 1; //взятие остатка
                 
                 if (u.coef[j + i] >= p) {
-                    u.coef[j + i] -= (BASE)p;
+                    u.coef[j + i] -= (BASE)p; //вычитаем разряды делимого без переноса
                 } else {
                     u.coef[j + i] = (BASE)((((DBASE)1 << BASE_SIZE) + u.coef[j + i]) - p);
-                    k++;
+                    k++; //с переносом
                 }
             }
             
-            if (k > u.coef[j + v.len]) {
-                qhat--;
+            if (k > u.coef[j + v.len]) { //компенсация
+                qhat--; //работа с правильным q
                 BASE carry = 0;
                 for (int i = 0; i < v.len; i++) {
                     DBASE sum = (DBASE)u.coef[j + i] + v.coef[i] + carry;

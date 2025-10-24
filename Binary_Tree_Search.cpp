@@ -12,35 +12,33 @@ using namespace std;
 // Узел бинарного дерева поиска
 class TreeNode {
 public:
-    int key;           // Ключ узла
-    TreeNode* left;    // Указатель на левого потомка  
-    TreeNode* right;   // Указатель на правого потомка
+    int key; //Ключ узла
+    TreeNode* left; //Указатель на левого потомка  
+    TreeNode* right; //Указатель на правого потомка
     
-    // Конструктор узла - инициализирует ключ и устанавливает потомков в nullptr
+    //Конструктор узла - инициализирует ключ и устанавливает потомков в nullptr
     TreeNode(int k) : key(k), left(nullptr), right(nullptr) {
-        cout << "Создан узел с ключом: " << key << endl;
+        cout << key << endl;
     }
     
-    // Деструктор узла - выводит сообщение при удалении
+    //Деструктор узла - выводит сообщение при удалении
     ~TreeNode() {
-        cout << "Удален узел с ключом: " << key << endl;
+        cout << key << endl;
     }
 };
 
-// Класс бинарного дерева поиска
+//дерево поиска
 class BinarySearchTree {
 private:
-    TreeNode* root; // Корень дерева
+    TreeNode* root; //Корень дерева
     
-    // Приватные вспомогательные методы для рекурсивных операций
-    
-    // Рекурсивная вставка узла в поддерево с визуализацией процесса
+    //с визуализацией процесса
     TreeNode* insertRecursive(TreeNode* node, int key, int depth = 0) {
-        // Создаем отступы для визуализации глубины рекурсии
+        //отступы для визуализации глубины рекурсии
         string indent(depth * 2, ' ');
         cout << indent << "Рекурсия на глубине " << depth;
         
-        // Базовый случай: если узел пустой, создаем новый
+        //если узел пустой, создаем новый
         if (node == nullptr) {
             cout << " - создаем новый узел для ключа " << key << endl;
             return new TreeNode(key);
@@ -48,12 +46,12 @@ private:
         
         cout << " - сравниваем " << key << " с текущим узлом " << node->key << endl;
         
-        // Рекурсивно вставляем в левое или правое поддерево
+        // рекурсивно вставляем в левое или правое поддерево
         if (key < node->key) {
-            cout << indent << "Идем влево (ключ меньше)" << endl;
+            cout << indent << "Идем влево где ключ меньше" << endl;
             node->left = insertRecursive(node->left, key, depth + 1);
         } else if (key > node->key) {
-            cout << indent << "Идем вправо (ключ больше)" << endl;
+            cout << indent << "Идем вправо где ключ больше" << endl;
             node->right = insertRecursive(node->right, key, depth + 1);
         } else {
             cout << indent << "Ключ уже существует - не добавляем дубликат" << endl;

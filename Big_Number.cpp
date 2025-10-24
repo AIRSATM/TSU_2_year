@@ -663,8 +663,8 @@ void test() {
     BN sum = a + b;
     cout << "a + b = " << sum << endl;
 
-    BN diff = a - b;
-    cout << "a - b = " << diff << endl;
+    BN minus = a - b;
+    cout << "a - b = " << minus << endl;
 
     BN mult = a * b;
     cout << "a * b = " << mult << endl;

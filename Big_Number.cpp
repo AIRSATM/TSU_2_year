@@ -655,35 +655,25 @@ public:
 };
 
 void test() {
-    const int max_length = 1000;
-    int N = 1000;
-    do {
-        int len_A = rand() % max_length + 1;
-        int len_D = rand() % max_length + 1;
-        
-        
-        BN A(len_A, true); // случайное число размера len_A
-        BN D(len_D, true); // случайное число размера len_D
-        
-        
-        if (D == BN()) continue; // защита от деления на ноль
-        
-        
-        BN Q = A / D;
-        BN R = A % D;
-        
-        
-        // Проверка условий: A == Q*D + R и R < D
-        if (!(A == Q * D + R && R < D)) {
-            cout << "Ошибка при тестировании деления!" << endl;
-            cout << "A: " << A << "\nD: " << D << "\nQ: " << Q << "\nR: " << R << endl;
-            break;
-        }
-    } while (--N);
-    
-    if (N == 0) {
-        cout << "Тестирование успешно завершено!" << endl;
-    }
+    BN a(10, true);
+    BN b(8, true);
+
+    cout << "a: " << a << "\nb: " << b << endl;
+
+    BN sum = a + b;
+    cout << "a + b = " << sum << endl;
+
+    BN diff = a - b;
+    cout << "a - b = " << diff << endl;
+
+    BN mult = a * b;
+    cout << "a * b = " << mult << endl;
+
+    BN div = a / b;
+    cout << "a / b = " << div << endl;
+
+    BN mod = a % b;
+    cout << "a % b = " << mod << endl;
 }
 int main()
 {

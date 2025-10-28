@@ -12,8 +12,8 @@
 
 using namespace std;
 
-typedef unsigned int BASE;
-typedef unsigned long long int DBASE;
+typedef unsigned char BASE;
+typedef unsigned short int DBASE;
 
 
 class BN {
@@ -655,25 +655,35 @@ public:
 };
 
 void test() {
-    BN a(10, true);
-    BN b(8, true);
-
-    cout << "a: " << a << "\nb: " << b << endl;
-
-    BN sum = a + b;
-    cout << "a + b = " << sum << endl;
-
-    BN minus = a - b;
-    cout << "a - b = " << minus << endl;
-
-    BN mult = a * b;
-    cout << "a * b = " << mult << endl;
-
-    BN div = a / b;
-    cout << "a / b = " << div << endl;
-
-    BN mod = a % b;
-    cout << "a % b = " << mod << endl;
+    const int max_length = 1000;
+    int N = 1000;
+    do {
+        int len_A = rand() % max_length + 1;
+        int len_D = rand() % max_length + 1;
+        
+        
+        BN A(len_A, true); // случайное число размера len_A
+        BN D(len_D, true); // случайное число размера len_D
+        
+        
+        if (D == BN()) continue; // защита от деления на ноль
+        
+        
+        BN Q = A / D;
+        BN R = A % D;
+        
+        
+        // Проверка условий: A == Q*D + R и R < D
+        if (!(A == Q * D + R && R < D && A - R == Q * D)) {
+            cout << "error" << endl;
+            cout << "A: " << A << "\nD: " << D << "\nQ: " << Q << "\nR: " << R << endl;
+            break;
+        }
+    } while (--N);
+    
+    if (N == 0) {
+        cout << "success" << endl;
+    }
 }
 int main()
 {

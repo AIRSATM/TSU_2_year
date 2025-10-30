@@ -9,19 +9,16 @@
 
 using namespace std;
 
-// Узел бинарного дерева поиска
 class TreeNode {
 public:
     int key; //Ключ узла
     TreeNode* left; //Указатель на левого потомка  
     TreeNode* right; //Указатель на правого потомка
     
-    //Конструктор узла - инициализирует ключ и устанавливает потомков в nullptr
     TreeNode(int k) : key(k), left(nullptr), right(nullptr) {
         cout << key << endl;
     }
     
-    //Деструктор узла - выводит сообщение при удалении
     ~TreeNode() {
         cout << key << endl;
     }
@@ -95,7 +92,6 @@ private:
         return node;
     }
     
-    // Поиск узла с максимальным ключом в поддереве с визуализацией пути
     TreeNode* findMaxNode(TreeNode* node, bool showPath = false) const {
         if (node == nullptr) {
             if (showPath) cout << "Поддерево пустое" << endl;
@@ -106,7 +102,6 @@ private:
             cout << "Начинаем поиск максимума с узла " << node->key << endl;
         }
         
-        // В BST максимальный элемент находится в самом правом узле
         while (node->right != nullptr) {
             if (showPath) {
                 cout << "Переходим вправо: " << node->key << " -> " << node->right->key << endl;
@@ -121,11 +116,10 @@ private:
         return node;
     }
     
-    // Вычисление высоты поддерева с детальным объяснением
     int calculateHeight(TreeNode* node, bool showCalculation = false, int depth = 0) const {
         string indent(depth * 2, ' ');
         
-        // Базовый случай: пустое дерево имеет высоту -1
+        // пустое дерево имеет высоту -1
         if (node == nullptr) {
             if (showCalculation) {
                 cout << indent << "Пустой узел - высота = -1" << endl;
